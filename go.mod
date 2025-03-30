@@ -1,0 +1,23 @@
+module github.com/aniqp/formal_assessment
+
+go 1.23.0
+
+toolchain go1.23.7
+
+require (
+	github.com/creack/pty v1.1.24
+	github.com/gliderlabs/ssh v0.3.8
+	github.com/openai/openai-go v0.1.0-beta.3
+	golang.org/x/crypto v0.32.0
+	golang.org/x/sync v0.12.0
+	gopkg.in/yaml.v3 v3.0.1
+)
+
+require (
+	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
+	github.com/tidwall/gjson v1.18.0 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/tidwall/sjson v1.2.5 // indirect
+	golang.org/x/sys v0.31.0 // indirect
+)

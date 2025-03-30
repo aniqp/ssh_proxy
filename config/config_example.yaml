@@ -1,0 +1,23 @@
+proxy:
+  listen_address:
+  log_dir:
+  host_key:
+  allowed_users:
+    - username:
+      public_key_path:
+      password:
+    - username:
+      public_key_path:
+      password:
+
+upstream:
+  host:
+  port:
+  username:
+  upstream_host_key_path:
+  private_key_path:
+  password:
+
+llm:
+  api_key:
+  prompt:
