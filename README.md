@@ -48,10 +48,6 @@ I used the io.Copy() function in a goroutine to connect the streams between the 
 
 Additionally, I write to log files on the same io.Copy() thread as the upstream session's stdin. This ensures the log captures exactly what is being sent by the client.
 
-### Security
-In the configuration file, I store the paths to the SSH keys instead of the base64-enccoded values of the keys. 
-This makes it easier to work with the keys, since there is no need to decode them each time they're read.
-
 ### LLM Prompt
 When initially prompted to point out any security vulnerabilities, the LLM would be overly cautious and point potential flaws with commands like "echo hello" or "exit".
 It was describing security vulnerabilities in every session. I tweaked the prompt and asked it to use more careful discretion, which, by inspection, seemed to improve its results.
