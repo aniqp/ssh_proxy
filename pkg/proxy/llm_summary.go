@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"os"
+	"time"
+
 	"github.com/aniqp/formal_assessment/pkg/config"
 	"github.com/gliderlabs/ssh"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/packages/param"
-	"log"
-	"os"
-	"time"
 )
 
 type LLMService struct {

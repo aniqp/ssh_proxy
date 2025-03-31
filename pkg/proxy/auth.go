@@ -2,10 +2,11 @@ package proxy
 
 import (
 	"fmt"
-	"github.com/aniqp/formal_assessment/pkg/config"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"os"
+
+	"github.com/aniqp/formal_assessment/pkg/config"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gliderlabs/ssh"
 	gossh "golang.org/x/crypto/ssh"

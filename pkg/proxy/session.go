@@ -2,13 +2,14 @@ package proxy
 
 import (
 	"errors"
+	"log"
+	"strconv"
+
 	"github.com/aniqp/formal_assessment/pkg/config"
 	"github.com/gliderlabs/ssh"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/option"
 	gossh "golang.org/x/crypto/ssh"
-	"log"
-	"strconv"
 )
 
 type SessionHandler struct {

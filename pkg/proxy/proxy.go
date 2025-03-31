@@ -2,32 +2,24 @@ package proxy
 
 import (
 	"fmt"
+
 	"github.com/aniqp/formal_assessment/pkg/config"
-	"github.com/creack/pty"
 	"github.com/gliderlabs/ssh"
-	"os"
 )
 
-type Server struct {
+type ProxyServer struct {
 	Cfg       *config.Config
 	SSHServer *ssh.Server
 }
 
-func setWinsize(f *os.File, width, height int) error {
-	return pty.Setsize(f, &pty.Winsize{
-		Cols: uint16(width),
-		Rows: uint16(height),
-	})
-}
-
-func NewServer(cfg *config.Config) (*Server, error) {
+func NewServer(cfg *config.Config) (*ProxyServer, error) {
 	am := NewAuthManager(cfg)
 	signer, err := readPrivateKey(cfg.Proxy.HostKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load host key: %w", err)
 	}
 
-	server := &Server{
+	server := &ProxyServer{
 		Cfg: cfg,
 		SSHServer: &ssh.Server{
 			Addr:             cfg.Proxy.ListenAddress,

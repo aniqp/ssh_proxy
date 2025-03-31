@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log"
+
 	"github.com/aniqp/formal_assessment/pkg/config"
 	"github.com/aniqp/formal_assessment/pkg/proxy"
-	"log"
 )
 
 func main() {

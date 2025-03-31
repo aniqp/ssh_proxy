@@ -3,8 +3,9 @@ package config
 import (
 	"flag"
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"os"
+
+	"gopkg.in/yaml.v3"
 )
 
 type User struct {
@@ -24,7 +25,7 @@ type UpstreamConfig struct {
 	Host                string `yaml:"host"`
 	Port                int    `yaml:"port"`
 	Username            string `yaml:"username"`
-	PrivateKeyPath      string `yaml:"private_key_path"`
+	PrivateKeyPath      string `yaml:"client_private_key_path"`
 	UpstreamHostKeyPath string `yaml:"upstream_host_key_path"`
 	Password            string `yaml:"password"`
 }

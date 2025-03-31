@@ -2,11 +2,13 @@ package proxy
 
 import (
 	"fmt"
-	"github.com/aniqp/formal_assessment/pkg/config"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
+
+	"github.com/aniqp/formal_assessment/pkg/config"
 )
 
 type Logger struct {
@@ -23,7 +25,9 @@ func (l *Logger) createLogFile(username string, timestamp time.Time, logDir stri
 	}
 
 	timestampString := timestamp.Format("2006-01-02 15:04:05")
-	filename := fmt.Sprintf("session_%s_%s.txt", username, timestampString)
+	timestampStringReplace := strings.ReplaceAll(timestampString, ":", "_")
+
+	filename := fmt.Sprintf("session_%s_%s.txt", username, timestampStringReplace)
 	filePath := filepath.Join(logDir, filename)
 
 	logFile, err := os.Create(filePath)

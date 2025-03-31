@@ -3,12 +3,13 @@ package proxy
 import (
 	"context"
 	"fmt"
-	"github.com/gliderlabs/ssh"
-	gossh "golang.org/x/crypto/ssh"
 	"io"
 	"log"
 	"os"
 	"time"
+
+	"github.com/gliderlabs/ssh"
+	gossh "golang.org/x/crypto/ssh"
 )
 
 func (h *SessionHandler) connectUpstream(addr string, sshConfig *gossh.ClientConfig, s ssh.Session) error {
@@ -31,7 +32,7 @@ func (h *SessionHandler) connectUpstream(addr string, sshConfig *gossh.ClientCon
 
 	forwardIO(upstreamSession, s, logFile)
 
-	// when session is closed, run llm summary function asynchronously
+	// when session is closed, run llm summary function in a goroutine
 	if h.cfg.LLM.Enabled {
 		defer func() {
 			go func() {
