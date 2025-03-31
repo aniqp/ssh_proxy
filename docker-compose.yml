@@ -1,7 +1,6 @@
 version: '3.8'
-# TODO: clean up volume mounting -- should only need to mount the keys directory, not everything
 volumes:
-  session_logs:  # Named volume for logs
+  session_logs:
 
 services:
   ssh-proxy:
@@ -10,16 +9,17 @@ services:
       dockerfile: Dockerfile
     container_name: ssh-proxy
     volumes:
-      - ./config/config.yaml:/app/config.yaml
+      - ./config.yaml:/app/config.yaml
       - ./keys/proxy_host_keys:/app/keys/proxy_host_keys
-      - ./keys/proxy_allowed_keys/pub:/app/keys/proxy_allowed_keys/pub
+      - ./keys/client_keys/pub:/app/keys/client_keys/pub
       - ./keys/upstream_auth:/app/keys/upstream_auth
       - session_logs:/app/logs
+      - ./logs:/app/logs
     ports:
       - "2022:2022"
     working_dir: /app
     entrypoint: >
-      sh -c "touch ./config.yaml && ./ssh-proxy --config ./config.yaml"
+      sh -c "./ssh-proxy --config ./config.yaml"
 
   openssh-server:
     image: lscr.io/linuxserver/openssh-server:latest
@@ -29,11 +29,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - PUBLIC_KEY_DIR=/config/upstream_auth/.ssh/pub
+      - PUBLIC_KEY_DIR=/config/upstream_auth/.ssh/client_pub
     volumes:
-      - ./keys/upstream_auth/.ssh/pub:/config/upstream_auth/.ssh/pub
+      - ./keys/upstream_auth/.ssh/client_pub:/config/upstream_auth/.ssh/client_pub
       - session_logs:/var/log/session_logs
-      - ./config/config.yaml:/etc/ssh-proxy/config.yaml
+      - ./config.yaml:/etc/ssh-proxy/config.yaml
     ports:
       - 2222:2222
     restart: unless-stopped
