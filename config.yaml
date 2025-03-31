@@ -5,19 +5,19 @@ proxy:
   allowed_users:
     - username: "user1"
       public_key_path: "./keys/client_keys/pub/user1_rsa.pub"
-      password: "$2a$10$nA1IDuq//Jo7aP50sSwQGeZ.WLSmEZBQcCYmmwfgwALtsZbULFjYu"
+      password: "pass1"
     - username: "user2"
       public_key_path: "./keys/client_keys/pub/user2_rsa.pub"
-      password: "$2a$10$nicg5ZYE9byjhWWpF/tl3OolKs80bJq28zJZ4bUylvCqIwMbACKNu"
+      password: "pass2"
 
 upstream:
   host: "openssh-server"
   port: 2222
-  username: "linuxserver.io"
+  username: "proxyserver"
   upstream_host_key_path: "./keys/upstream_auth/.ssh/known_hosts/ssh_host_ecdsa_key.pub"
   client_private_key_path: "./keys/upstream_auth/.ssh/client_priv/id_rsa"
   password: ""
 
 llm:
   api_key: ""
-  prompt: "Here is a log of the stdin from a user’s SSH session with an upstream host. Please analyze the session and provide a concise summary of the user's actions. Additionally, assess any potential security risks based on the commands entered -- remember to be concise, and to use the discretion of a cybersecurity expert. Not every shell session will have a security risk, but be aware of vulnerabilities."
+  prompt: "Here is a log of the stdin from a user’s SSH session with an upstream host (user is interacting with a proxy, proxy communicates user input upstream). Please analyze the session and provide a concise summary of the user's actions. Additionally, assess any potential security risks based on the commands entered -- remember to be concise, and to use the discretion of a cybersecurity expert. Not every shell session will have a security risk, but be aware of vulnerabilities."

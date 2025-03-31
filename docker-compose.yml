@@ -30,6 +30,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - PUBLIC_KEY_DIR=/config/upstream_auth/.ssh/client_pub
+      - USER_NAME=proxyserver
     volumes:
       - ./keys/upstream_auth/.ssh/client_pub:/config/upstream_auth/.ssh/client_pub
       - session_logs:/var/log/session_logs

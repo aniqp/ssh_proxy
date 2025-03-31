@@ -2,11 +2,7 @@ package test
 
 import (
 	"bytes"
-	"fmt"
-	"os"
 	"os/exec"
-	"path/filepath"
-	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -17,8 +13,8 @@ import (
 const (
 	proxyAddr    = "localhost"
 	proxyPort    = "2022"
-	upstreamAddr = "linuxserver.io"
-	testUser     = "user2_rsa"
+	upstreamAddr = "proxyserver"
+	testUser     = "user2"
 	privateKey   = "../../keys/client_keys/priv/user2_rsa"
 )
 
@@ -60,43 +56,6 @@ func startInteractiveSession(t *testing.T) {
 
 	err = sshCmd.Process.Kill()
 	assert.NoError(t, err, "Failed to kill interactive session")
-}
-
-func findLatestUserLog(logDir, username string) (string, error) {
-	files, err := os.ReadDir(logDir)
-	if err != nil {
-		return "", fmt.Errorf("failed to read log directory: %v", err)
-	}
-
-	var latestFile string
-	var latestModTime time.Time
-
-	for _, file := range files {
-		if strings.Contains(file.Name(), username) {
-			filePath := filepath.Join(logDir, file.Name())
-
-			info, err := os.Stat(filePath)
-			if err != nil {
-				continue
-			}
-			if latestFile == "" || info.ModTime().After(latestModTime) {
-				latestModTime = info.ModTime()
-				latestFile = filePath
-			}
-		}
-	}
-
-	if latestFile == "" {
-		return "", fmt.Errorf("no log file found for user %s", username)
-	}
-
-	data, err := os.ReadFile(latestFile)
-
-	if err != nil {
-		return "", fmt.Errorf("failed to read log file %s: %v", latestFile, err)
-	}
-
-	return string(data), nil
 }
 
 func TestSingleClientMultipleCommands(t *testing.T) {

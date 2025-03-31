@@ -6,8 +6,6 @@ import (
 	"os"
 
 	"github.com/aniqp/formal_assessment/pkg/config"
-	"golang.org/x/crypto/bcrypt"
-
 	"github.com/gliderlabs/ssh"
 	gossh "golang.org/x/crypto/ssh"
 )
@@ -82,8 +80,7 @@ func (am *AuthManager) PasswordHandler(ctx ssh.Context, password string) bool {
 		log.Printf("Password auth failed: Unknown user or no password for %s", username)
 		return false
 	}
-	err := bcrypt.CompareHashAndPassword([]byte(auth.Password), []byte(password))
-	return err == nil
+	return auth.Password == password
 }
 
 func AddAuthMethods(keyPath string, password string) ([]gossh.AuthMethod, error) {

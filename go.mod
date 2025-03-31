@@ -5,7 +5,6 @@ go 1.23.0
 toolchain go1.23.7
 
 require (
-	github.com/creack/pty v1.1.24
 	github.com/gliderlabs/ssh v0.3.8
 	github.com/openai/openai-go v0.1.0-beta.3
 	github.com/stretchr/testify v1.10.0
