@@ -6,6 +6,8 @@ It logs client Stdin and delivers an LLM-based summary of each user's session an
 
 ## Video Demonstration
 
+https://github.com/user-attachments/assets/cf4568f7-1833-468e-8c34-4f2abfa53b93
+
 ## Local Setup Guide
 
 ### Prerequisites
