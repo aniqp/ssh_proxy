@@ -48,6 +48,9 @@ I used the `io.Copy()` function in a goroutine to connect the streams between th
 
 Additionally, the same thread is used to copy data from the client-proxy session to both the upstream session and the log file. This eliminates the need to manage and synchronize multiple threads, and also ensures there are no logging delays: the same input is logged and sent upstream.
 
+### LLM Summaries
+The LLM summaries run at the end of every session, and in a new goroutine so that the proxy can continue handling new sessions while the LLM processes the completed session transcript.
+
 ### LLM Prompt
 When initially prompted to point out any security vulnerabilities, the LLM would be overly cautious and point potential flaws with commands like "echo hello" or "exit".
 It was describing security vulnerabilities in every session. I tweaked the prompt and asked it to use more careful discretion, which, by inspection, seemed to improve its results.
