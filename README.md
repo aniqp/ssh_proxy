@@ -20,7 +20,6 @@ The exact keys used in this project's SSH servers are committed to the repositor
 
 ### Config File
 An example config.yaml file is provided in the project root, with all information filled except the llm API key. I used an OpenAI API key for this project.
-Note that for keys, the path to the key is specified, and for passwords, a bcrypted password is used.
 
 ### Docker Compose
 The application config and session logs are mounted to the upstream host as a volume.
@@ -46,11 +45,12 @@ Lastly, I used the official `openai/openai-go` package for the LLM summary.
 
 ### Information Forwarding
 I used the io.Copy() function in a goroutine to connect the streams between the client's proxy session and the proxy's upstream session. This approach efficiently forwards data between the streams, only copying when data is available, and runs on its own thread, preventing any blocking.
-Additionally, I write to log files on the same io.Copy() thread as the client session's stdin. This ensures the log captures exactly what is being sent by the client.
+
+Additionally, I write to log files on the same io.Copy() thread as the upstream session's stdin. This ensures the log captures exactly what is being sent by the client.
 
 ### Security
 In the configuration file, I store the paths to the SSH keys instead of the base64-enccoded values of the keys. 
-I also bcrypt the passwords of allowed users. This helps reduce the risk of accidental data exposure and makes it easier to work with the keys, since there is no need to decode them each time they're read.
+This makes it easier to work with the keys, since there is no need to decode them each time they're read.
 
 ### LLM Prompt
 When initially prompted to point out any security vulnerabilities, the LLM would be overly cautious and point potential flaws with commands like "echo hello" or "exit".
