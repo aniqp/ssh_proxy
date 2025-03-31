@@ -19,7 +19,7 @@ The exact keys used in this project's SSH servers are committed to the repositor
 **On startup of the OpenSSH image, it will generate a new host key**. It uses the `ecdsa` key as its host, thus you can copy it from the terminal on image startup and overwrite the key at `upstream_auth/.ssh/known_hosts/ssh_host_ecdsa_key.pub`. **This is the only key that needs to be changed** -- make sure to rebuild the images after changing the key.
 
 ### Config File
-An example config.yaml file is provided in the project root, with all information filled except the llm API key. I used an OpenAI API key for this project.
+An example config.yaml file is provided in the project root, with all information filled except the LLM API key. I used an OpenAI API key for this project.
 
 ### Docker Compose
 The application config and session logs are mounted to the upstream host as a volume.
