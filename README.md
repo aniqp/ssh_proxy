@@ -46,7 +46,7 @@ Lastly, I used the official `openai/openai-go` package for the LLM summary.
 ### Information Forwarding
 I used the `io.Copy()` function in a goroutine to connect the streams between the client's proxy session and the proxy's upstream session. This approach efficiently forwards data between the streams, only copying when data is available, and runs on its own thread, preventing any blocking.
 
-Additionally, the same thread is used to copy data from the client-proxy session to both the upstream session and the log file. This eliminates the need to manage amd synchronize multiple threads, and also ensures there are no logging delays: the same input is logged and sent upstream.
+Additionally, the same thread is used to copy data from the client-proxy session to both the upstream session and the log file. This eliminates the need to manage and synchronize multiple threads, and also ensures there are no logging delays: the same input is logged and sent upstream.
 
 ### LLM Prompt
 When initially prompted to point out any security vulnerabilities, the LLM would be overly cautious and point potential flaws with commands like "echo hello" or "exit".
