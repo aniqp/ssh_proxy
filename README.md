@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/cf4568f7-1833-468e-8c34-4f2abfa53b93
 - OpenAI API key
 
 The exact keys used in this project's SSH servers are committed to the repository for ease of testing. Since this is a local application, there is little to no risk involved. However, in production, we would communicate these keys over a more secure file transfer/storage mechanism.
-**On startup of the OpenSSH image, it will generate a new host key**. It uses the `ecdsa` key as its host, thus you can copy it from the terminal on image startup and overwrite the key at `upstream_auth/.ssh/known_hosts/ssh_host_ecdsa_key.pub`. **This is the only key that needs to be changed**.
+**On startup of the OpenSSH image, it will generate a new host key**. It uses the `ecdsa` key as its host, thus you can copy it from the terminal on image startup and overwrite the key at `upstream_auth/.ssh/known_hosts/ssh_host_ecdsa_key.pub`. **This is the only key that needs to be changed** -- make sure to rebuild the images after changing the key.
 
 ### Config File
 An example config.yaml file is provided in the project root, with all information filled except the llm API key. I used an OpenAI API key for this project.
