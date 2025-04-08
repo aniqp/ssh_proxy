@@ -15,7 +15,7 @@ const (
 	proxyPort    = "2022"
 	upstreamAddr = "proxyserver"
 	testUser     = "user2"
-	privateKey   = "../../keys/client_keys/priv/user2_rsa"
+	privateKey   = "../../keys/client/priv/user2_ecdsa"
 )
 
 func runSSHCommand(cmd string) (string, error) {
