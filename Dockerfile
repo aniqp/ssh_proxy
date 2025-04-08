@@ -13,3 +13,5 @@ RUN go build -o /app/ssh-proxy cmd/main.go
 
 FROM alpine:latest
 COPY --from=builder /app/ssh-proxy /app/ssh-proxy
+
+ENTRYPOINT ["/app/ssh-proxy"]
