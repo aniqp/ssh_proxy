@@ -13,7 +13,6 @@ services:
       - ./keys/proxy:/app/keys/proxy
       - ./keys/client/pub:/app/keys/client/pub
       - session_logs:/app/logs
-      - ./logs:/app/logs
     ports:
       - "2022:2022"
     working_dir: /app
