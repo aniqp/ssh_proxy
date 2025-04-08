@@ -1,21 +1,21 @@
 proxy:
   listen_address: "0.0.0.0:2022"
   log_dir: "./logs"
-  host_key: "keys/proxy_host_keys/proxy_host_key"
+  host_key: "keys/proxy/host/priv/proxy_host_ecdsa"
   allowed_users:
     - username: "user1"
-      public_key_path: "./keys/client_keys/pub/user1_rsa.pub"
+      public_key_path: "./keys/client/pub/user1_ecdsa.pub"
       password: "pass1"
     - username: "user2"
-      public_key_path: "./keys/client_keys/pub/user2_rsa.pub"
+      public_key_path: "./keys/client/pub/user2_ecdsa.pub"
       password: "pass2"
 
 upstream:
   host: "openssh-server"
   port: 2222
   username: "proxyserver"
-  upstream_host_key_path: "./keys/upstream_auth/.ssh/known_hosts/ssh_host_ecdsa_key.pub"
-  client_private_key_path: "./keys/upstream_auth/.ssh/client_priv/id_rsa"
+  upstream_host_key_path: "./keys/proxy/upstream_client/known_hosts/ssh_host_ecdsa_key.pub"
+  client_private_key_path: "./keys/proxy/upstream_client/priv/id_ecdsa"
   password: ""
 
 llm:
