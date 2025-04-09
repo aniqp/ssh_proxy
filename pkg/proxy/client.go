@@ -15,13 +15,13 @@ import (
 func (h *SessionHandler) connectUpstream(addr string, sshConfig *gossh.ClientConfig, s ssh.Session) error {
 	client, err := gossh.Dial("tcp", addr, sshConfig)
 	if err != nil {
-		return &ConnectionErr{"unable to connect to upstream server", err}
+		return fmt.Errorf("unable to connect to upstream server: %v", err)
 	}
 	defer client.Close()
 
 	upstreamSession, err := client.NewSession()
 	if err != nil {
-		return &ConnectionErr{"failed to create session", err}
+		return fmt.Errorf("failed to create session: %v", err)
 	}
 	defer upstreamSession.Close()
 
@@ -82,7 +82,7 @@ func (h *SessionHandler) handleInteractiveSession(us *gossh.Session, ptyReq ssh.
 	}()
 
 	if err := us.Shell(); err != nil {
-		return &ConnectionErr{"failed to start shell", err}
+		return fmt.Errorf("failed to start shell: %v", err)
 	}
 
 	err := us.Wait()
