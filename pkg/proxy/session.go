@@ -40,7 +40,7 @@ func (h *SessionHandler) Handle(s ssh.Session) {
 		log.Printf("failed to add auth methods: %v", err)
 	}
 
-	upstreamKey, err := readPublicKey(h.cfg.Upstream.UpstreamHostKeyPath)
+	upstreamKey, err := readPublicKey(h.cfg.Upstream.HostKeyPath)
 	if err != nil {
 		log.Printf("failed to read upstream private key: %v", err)
 	}

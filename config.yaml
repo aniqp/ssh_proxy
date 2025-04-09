@@ -14,7 +14,7 @@ upstream:
   host: "openssh-server"
   port: 2222
   username: "proxyserver"
-  upstream_host_key_path: "./keys/proxy/upstream_client/known_hosts/ssh_host_ecdsa_key.pub"
+  host_key_path: "./keys/proxy/upstream_client/known_hosts/ssh_host_ecdsa_key.pub"
   client_private_key_path: "./keys/proxy/upstream_client/priv/id_ecdsa"
   password: ""
 
