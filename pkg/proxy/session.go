@@ -44,6 +44,7 @@ func (h *SessionHandler) Handle(s ssh.Session) {
 	if err != nil {
 		log.Printf("failed to read upstream private key: %v", err)
 	}
+
 	sshConfig := &gossh.ClientConfig{
 		User:            h.cfg.Upstream.Username,
 		Auth:            authMethods,

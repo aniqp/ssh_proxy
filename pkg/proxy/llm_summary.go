@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/aniqp/formal_assessment/pkg/config"
-	"github.com/gliderlabs/ssh"
 	"github.com/openai/openai-go"
 	"github.com/openai/openai-go/packages/param"
 )
@@ -42,8 +41,8 @@ func (llm *LLMService) validateLLMKey() {
 	log.Println("LLM key validated successfully")
 }
 
-func (llm *LLMService) summarizeSession(ctx context.Context, f *os.File, s ssh.Session) error {
-	data, err := os.ReadFile(f.Name())
+func (llm *LLMService) summarizeSession(ctx context.Context, filePath string, username string) error {
+	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return fmt.Errorf("error reading log file: %v", err)
 	}
@@ -56,16 +55,21 @@ func (llm *LLMService) summarizeSession(ctx context.Context, f *os.File, s ssh.S
 		Temperature:         param.NewOpt(0.3),
 		MaxCompletionTokens: param.NewOpt(int64(300)),
 	})
-
 	if err != nil {
-		return fmt.Errorf("error while generating llm summary %v", err)
+		return fmt.Errorf("error while generating LLM summary: %v", err)
 	}
+
 	response := chatCompletion.Choices[0].Message.Content
-
-	_, err = f.WriteString("\n\n" + response)
+	f, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		return fmt.Errorf("error writing to file %v", err)
+		return fmt.Errorf("error reopening file to append: %v", err)
 	}
-	log.Printf("Session summary available in logs.")
+	defer f.Close()
+
+	if _, err := f.WriteString("\n\n" + response); err != nil {
+		return fmt.Errorf("error writing summary: %v", err)
+	}
+
+	log.Printf("LLM session summary for user %s appended to log file.", username)
 	return nil
 }

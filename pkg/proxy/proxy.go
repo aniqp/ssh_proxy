@@ -28,6 +28,7 @@ func NewServer(cfg *config.Config) (*ProxyServer, error) {
 			PasswordHandler:  am.PasswordHandler,
 		},
 	}
+
 	server.SSHServer.AddHostKey(signer)
 	return server, nil
 }
