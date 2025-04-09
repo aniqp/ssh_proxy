@@ -4,6 +4,10 @@
 This project implements an SSH proxy in Go that forwards communication between clients of the proxy and an upstream SSH server.
 It logs client Stdin and delivers an LLM-based summary of each user's session and potential security risks involved.
 
+## Architecture Diagram
+
+![ssh_proxy_diagram](https://github.com/user-attachments/assets/7d24e750-52ed-4719-a4f9-c7b15ba98eff)
+
 ## Video Demonstration
 
 https://github.com/user-attachments/assets/cf4568f7-1833-468e-8c34-4f2abfa53b93
