@@ -60,8 +60,8 @@ func NewAuthManager(cfg *config.Config) *AuthManager {
 func (am *AuthManager) PublicKeyHandler(ctx ssh.Context, key ssh.PublicKey) bool {
 	username := ctx.User()
 	auth, exists := am.Users[username]
-	if !exists || auth.PublicKeyPath == "" {
-		log.Printf("Public key auth failed: Unknown user or no public key for %s", username)
+	if !exists {
+		log.Printf("Public key auth failed: unknown user %s", username)
 		return false
 	}
 	expectedKey, err := readPublicKey(auth.PublicKeyPath)
@@ -76,8 +76,8 @@ func (am *AuthManager) PublicKeyHandler(ctx ssh.Context, key ssh.PublicKey) bool
 func (am *AuthManager) PasswordHandler(ctx ssh.Context, password string) bool {
 	username := ctx.User()
 	auth, exists := am.Users[username]
-	if !exists || auth.Password == "" {
-		log.Printf("Password auth failed: Unknown user or no password for %s", username)
+	if !exists {
+		log.Printf("Password auth failed: Unknown user %s", username)
 		return false
 	}
 	return auth.Password == password
@@ -88,7 +88,7 @@ func AddAuthMethods(keyPath string, password string) ([]gossh.AuthMethod, error)
 	if keyPath != "" {
 		signer, err := readPrivateKey(keyPath)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to load sign key: %v", err)
+			return nil, fmt.Errorf("failed to load sign key: %v", err)
 		}
 		authMethods = append(authMethods, gossh.PublicKeys(signer))
 	}
