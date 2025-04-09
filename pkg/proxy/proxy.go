@@ -8,7 +8,7 @@ import (
 )
 
 type ProxyServer struct {
-	Cfg       *config.Config
+	cfg       *config.Config
 	SSHServer *ssh.Server
 }
 
@@ -20,7 +20,7 @@ func NewServer(cfg *config.Config) (*ProxyServer, error) {
 	}
 
 	server := &ProxyServer{
-		Cfg: cfg,
+		cfg: cfg,
 		SSHServer: &ssh.Server{
 			Addr:             cfg.Proxy.ListenAddress,
 			Handler:          NewSessionHandler(cfg),

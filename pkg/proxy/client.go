@@ -30,7 +30,7 @@ func (h *SessionHandler) connectUpstream(addr string, sshConfig *gossh.ClientCon
 		return fmt.Errorf("failed to create log file: %s", err)
 	}
 
-	logFilePath := logFile.Name() // Save before closing
+	logFilePath := logFile.Name()
 
 	forwardIO(upstreamSession, s, logFile)
 
