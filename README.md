@@ -1,4 +1,4 @@
-# SSH Proxy - Formal Assessment
+# SSH Proxy
 
 ## Description
 This project implements an SSH proxy in Go that forwards communication between clients of the proxy and an upstream SSH server.
