@@ -37,13 +37,14 @@ func NewSessionHandler(cfg *config.Config) ssh.Handler {
 func (h *SessionHandler) Handle(s ssh.Session) {
 	authMethods, err := AddAuthMethods(h.cfg.Upstream.PrivateKeyPath, h.cfg.Upstream.Password)
 	if err != nil {
-		log.Fatalf("failed to add auth methods: %v", err)
+		log.Printf("failed to add auth methods: %v", err)
 	}
 
-	upstreamKey, err := readPublicKey(h.cfg.Upstream.UpstreamHostKeyPath)
+	upstreamKey, err := readPublicKey(h.cfg.Upstream.HostKeyPath)
 	if err != nil {
-		log.Fatalf("failed to read upstream private key: %v", err)
+		log.Printf("failed to read upstream private key: %v", err)
 	}
+
 	sshConfig := &gossh.ClientConfig{
 		User:            h.cfg.Upstream.Username,
 		Auth:            authMethods,
@@ -52,12 +53,8 @@ func (h *SessionHandler) Handle(s ssh.Session) {
 
 	addr := h.cfg.Upstream.Host + ":" + strconv.Itoa(h.cfg.Upstream.Port)
 	if err := h.connectUpstream(addr, sshConfig, s); err != nil {
-		var ce *ConnectionErr
 		var ee *gossh.ExitError
-
-		if errors.As(err, &ce) {
-			log.Fatalf("failed to connect upstream: %v", err)
-		} else if errors.As(err, &ee) {
+		if errors.As(err, &ee) {
 			log.Printf("session exited with status: %d", ee.ExitStatus())
 		} else {
 			log.Printf("unexpected error in connecting upstream: %v", err)

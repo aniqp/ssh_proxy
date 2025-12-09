@@ -15,13 +15,13 @@ import (
 func (h *SessionHandler) connectUpstream(addr string, sshConfig *gossh.ClientConfig, s ssh.Session) error {
 	client, err := gossh.Dial("tcp", addr, sshConfig)
 	if err != nil {
-		return &ConnectionErr{"unable to connect to upstream server", err}
+		return fmt.Errorf("unable to connect to upstream server: %v", err)
 	}
 	defer client.Close()
 
 	upstreamSession, err := client.NewSession()
 	if err != nil {
-		return &ConnectionErr{"failed to create session", err}
+		return fmt.Errorf("failed to create session: %v", err)
 	}
 	defer upstreamSession.Close()
 
@@ -30,41 +30,46 @@ func (h *SessionHandler) connectUpstream(addr string, sshConfig *gossh.ClientCon
 		return fmt.Errorf("failed to create log file: %s", err)
 	}
 
+	logFilePath := logFile.Name()
+
 	forwardIO(upstreamSession, s, logFile)
 
-	// when session is closed, run llm summary function in a goroutine
-	if h.cfg.LLM.Enabled {
-		defer func() {
-			go func() {
-				ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-				defer cancel()
-
-				if err := h.llmService.summarizeSession(ctx, logFile, s); err != nil {
-					log.Printf("Error while summarizing session: %v", err)
-				}
-			}()
-		}()
-	}
-
 	ptyReq, winCh, isPty := s.Pty()
-	// Interactive SSH session
 	if isPty {
 		err := h.handleInteractiveSession(upstreamSession, ptyReq, winCh)
 		if err != nil {
+			logFile.Close()
 			return fmt.Errorf("error handling interactive session: %w", err)
 		}
-		// Remote command execution
 	} else {
 		command := s.RawCommand()
-		_, err := logFile.WriteString(command)
+		_, err := logFile.WriteString(command + "\n")
 		if err != nil {
+			logFile.Close()
 			return fmt.Errorf("error writing to log file: %v", err)
 		}
 		err = upstreamSession.Run(command)
 		if err != nil {
+			logFile.Close()
 			return fmt.Errorf("failed to run command: %v", err)
 		}
 	}
+
+	if err := logFile.Close(); err != nil {
+		log.Printf("Failed to close log file: %v", err)
+	}
+
+	if h.cfg.LLM.Enabled {
+		go func(path string, user string) {
+			ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+			defer cancel()
+
+			if err := h.llmService.summarizeSession(ctx, path, user); err != nil {
+				log.Printf("Error while summarizing session for %s: %v", user, err)
+			}
+		}(logFilePath, s.User())
+	}
+
 	return nil
 }
 
@@ -82,7 +87,7 @@ func (h *SessionHandler) handleInteractiveSession(us *gossh.Session, ptyReq ssh.
 	}()
 
 	if err := us.Shell(); err != nil {
-		return &ConnectionErr{"failed to start shell", err}
+		return fmt.Errorf("failed to start shell: %v", err)
 	}
 
 	err := us.Wait()
